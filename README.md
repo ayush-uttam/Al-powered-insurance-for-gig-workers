@@ -126,3 +126,35 @@ Mobile App
 Chatbot Support
 Real-time Claim Tracking
 Better AI Model
+
+## 9. Authentication
+User authentication will be implemented using JWT (JSON Web Tokens).
+
+Features:
+- User Signup
+- User Login
+- Secure password storage
+- Role based access (Customer / Admin)
+
+---
+
+## 10. Deployment
+The prototype will be deployed using:
+
+Frontend: Vercel  
+Backend: Render  
+Database: MongoDB Atlas  
+
+The application will be connected through GitHub for continuous deployment.
+
+---
+
+## 11. Working Prototype (Phase 1 Scope)
+For this phase, the prototype will include:
+
+- User login and signup
+- Basic dashboard
+- Insurance plan listing
+- Premium calculator
+
+This prototype will demonstrate the core functionality of the system.
