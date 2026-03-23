@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SafeRide AI Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/dashboard.css">
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+    <h2>🚗 SafeRide AI</h2>
+    <p>Dashboard</p>
+    <p>Ride</p>
+    <p>Alerts</p>
+    <p>Profile</p>
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+```
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2 id="userName">Welcome</h2>
+    <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+    <div class="stat">🚗 Rides: <span id="rides">12</span></div>
+    <div class="stat">🚨 Alerts: <span id="alerts">0</span></div>
+    <div class="stat">⭐ Safe Score: <span id="score">95%</span></div>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+
+    <!-- MAP -->
+    <div class="map">
+        🗺️ Live Map (Coming Soon)
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div>
+
+        <div class="panel">
+            <h3>Ride Control</h3>
+            <p id="rideStatus">Status: OFF</p>
+            <p>⏱️ Time: <span id="timer">0</span> sec</p>
+
+            <button class="start" onclick="startRide()">Start Ride</button>
+            <button class="stop" onclick="stopRide()">Stop Ride</button>
+        </div>
+
+        <div class="panel">
+            <h3>Emergency</h3>
+            <button class="sos" onclick="emergency()">🚨 SOS</button>
+        </div>
+
+        <div class="panel">
+            <h3>AI Alerts</h3>
+            <p id="aiAlert">No alerts detected</p>
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
