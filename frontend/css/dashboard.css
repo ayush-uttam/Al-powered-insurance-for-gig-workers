@@ -3,6 +3,9 @@ body {
     font-family: "Segoe UI", Arial, sans-serif;
     background: #20c997;
     color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* Navbar */
@@ -126,9 +129,16 @@ body {
 
 /* Dashboard styles */
 .container {
-    max-width: 1000px;
-    margin: 40px auto;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0 16px;
+}
+
+.dashboard-wrapper {
+    max-width: 1000px;
+    width: 100%;
 }
 .dashboard-grid {
     display: grid;
@@ -276,6 +286,82 @@ body {
 
 .claims-table tr:hover {
     background: #f8f9fa;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 50px;
+    height: 100vh;
+    background: #333;
+    transition: width 0.3s ease;
+    z-index: 1000;
+    overflow: hidden;
+    padding-top: 80px;
+}
+
+.sidebar.show {
+    width: 250px;
+}
+
+.hamburger {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    width: 100%;
+    padding: 10px 0;
+    display: block;
+    text-align: center;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    display: none;
+}
+
+.sidebar.show .sidebar-menu {
+    display: block;
+}
+
+.sidebar-menu li {
+    margin-bottom: 10px;
+}
+
+.sidebar-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    border-radius: 6px;
+}
+
+.sidebar-menu a:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.main-content {
+    margin-left: 50px;
+    display: flex;
+    justify-content: center;
+    min-height: calc(100vh - 80px);
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+}
+
+.dashboard-wrapper {
+    max-width: 1000px;
+    width: 100%;
 }
 
 /* General heading styles */

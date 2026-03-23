@@ -16,7 +16,18 @@
   </nav>
 </header>
 
-<div class="container">
+<div class="sidebar" id="sidebar">
+  <button class="hamburger" onclick="toggleSidebar()">☰</button>
+  <ul class="sidebar-menu">
+    <li><a href="#premium">Premium Calculator</a></li>
+    <li><a href="#risk">Risk Analysis</a></li>
+    <li><a href="#claims">Claims</a></li>
+  </ul>
+</div>
+
+<div class="main-content">
+  <div class="container">
+    <div class="dashboard-wrapper">
   <div class="dashboard-header">
     <h1>Welcome to Your Insurance Dashboard</h1>
     <p>Monitor your policy, premiums, and claims in real-time.</p>
@@ -42,19 +53,19 @@
   </div>
 
   <div class="dashboard-actions">
-    <div class="card">
+    <div class="card" id="premium">
       <h3>Policy Management</h3>
       <p>Calculate or update your AI-driven premium based on current risk factors.</p>
       <button onclick="calculatePremium()">Calculate Premium</button>
     </div>
 
-    <div class="card">
+    <div class="card" id="risk">
       <h3>Disruption Testing</h3>
       <p>Simulate weather disruptions to test automatic claim triggers.</p>
       <button onclick="triggerClaim()">Trigger Claim</button>
     </div>
 
-    <div class="card">
+    <div class="card" id="claims">
       <h3>Claims History</h3>
       <p>View all your past claims and payout details.</p>
       <a href="claims.html"><button>View Claims</button></a>
@@ -70,17 +81,17 @@
     </ul>
   </div>
 </div>
-
-<footer class="footer">
+  </div>
+  </div>
   <p>&copy; 2026 SAFERIDE. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
 </footer>
 
-<script src="script.js"></script>
-</body>
-</html>
-
-</div>
-
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('show');
+}
+</script>
 <script src="script.js"></script>
 </body>
 </html>
