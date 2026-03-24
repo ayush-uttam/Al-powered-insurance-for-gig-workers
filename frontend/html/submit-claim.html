@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SafeRide AI – Submit Claim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L12 2z"/></svg>
+      </div>
+      <span class="logo-text">GigShield</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Customer</div>
+      <a href="dashboard.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Overview
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L12 2z"/></svg>
+        My Policy
+      </a>
+      <a href="submit-claim.html" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Submit Claim
+      </a>
+      <a href="claims.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Claim History
+      </a>
+
+      <div class="nav-section-label" style="margin-top:1.5rem;">Admin</div>
+      <a href="admin-claims.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Applications
+      </a>
+      <a href="admin-claims.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Claims Management
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Fraud Alerts
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 19.07A10 10 0 014.93 4.93"/></svg>
+        Profile Setup
+      </a>
+      <div class="ai-badge">
+        <span class="ai-icon">✦</span>
+        AI-Powered Coverage
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-wrapper">
+
+    <!-- TOP NAVBAR -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <nav class="topbar-links">
+        <a href="dashboard.html" class="topbar-link">Home</a>
+        <a href="#" class="topbar-link">Plans</a>
+        <a href="dashboard.html" class="topbar-link">Dashboard</a>
+        <a href="claims.html" class="topbar-link">Claims</a>
+        <a href="submit-claim.html" class="topbar-link active">Submit Claim</a>
+      </nav>
+      <button class="logout-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Log Out
+      </button>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="content" id="main-content">
+
+      <!-- PAGE HEADER -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Submit Insurance Claim</h1>
+          <p class="page-subtitle">Please provide your details and incident information to file your claim.</p>
+        </div>
+      </div>
+
+      <!-- CLAIM FORM -->
+      <div class="claim-form-container">
+        <form class="claim-form" id="claimForm">
+
+          <!-- PERSONAL INFORMATION -->
+          <div class="form-section">
+            <h3 class="section-title">Personal Information</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="fullName" class="form-label">Full Name *</label>
+                <input type="text" id="fullName" name="fullName" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address *</label>
+                <input type="email" id="email" name="email" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="phone" class="form-label">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="dateOfBirth" class="form-label">Date of Birth *</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="address" class="form-label">Address *</label>
+                <textarea id="address" name="address" class="form-textarea" rows="3" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="occupation" class="form-label">Occupation *</label>
+                <select id="occupation" name="occupation" class="form-select" required>
+                  <option value="">Select Occupation</option>
+                  <option value="driver">Ride-share Driver</option>
+                  <option value="delivery">Delivery Worker</option>
+                  <option value="freelancer">Freelancer</option>
+                  <option value="contractor">Contractor</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- INCIDENT DETAILS -->
+          <div class="form-section">
+            <h3 class="section-title">Incident Details</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="incidentDate" class="form-label">Date of Incident *</label>
+                <input type="date" id="incidentDate" name="incidentDate" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="incidentTime" class="form-label">Time of Incident *</label>
+                <input type="time" id="incidentTime" name="incidentTime" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="incidentLocation" class="form-label">Location of Incident *</label>
+                <input type="text" id="incidentLocation" name="incidentLocation" class="form-input" placeholder="City, State/Province" required>
+              </div>
+              <div class="form-group">
+                <label for="claimType" class="form-label">Type of Claim *</label>
+                <select id="claimType" name="claimType" class="form-select" required>
+                  <option value="">Select Claim Type</option>
+                  <option value="medical">Medical Treatment</option>
+                  <option value="vehicle">Vehicle Damage</option>
+                  <option value="property">Property Damage</option>
+                  <option value="liability">Third Party Liability</option>
+                  <option value="disability">Disability</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label for="incidentDescription" class="form-label">Detailed Description of Incident *</label>
+                <textarea id="incidentDescription" name="incidentDescription" class="form-textarea" rows="4" placeholder="Please provide a detailed description of what happened..." required></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- MEDICAL INFORMATION -->
+          <div class="form-section">
+            <h3 class="section-title">Medical Information</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="treatmentReceived" class="form-label">Treatment Received</label>
+                <select id="treatmentReceived" name="treatmentReceived" class="form-select">
+                  <option value="">Select Treatment Type</option>
+                  <option value="emergency">Emergency Room</option>
+                  <option value="hospital">Hospital Admission</option>
+                  <option value="clinic">Clinic Visit</option>
+                  <option value="doctor">Doctor's Office</option>
+                  <option value="urgent">Urgent Care</option>
+                  <option value="none">No Treatment Yet</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="treatmentDate" class="form-label">Date of Treatment</label>
+                <input type="date" id="treatmentDate" name="treatmentDate" class="form-input">
+              </div>
+              <div class="form-group">
+                <label for="medicalProvider" class="form-label">Medical Provider Name</label>
+                <input type="text" id="medicalProvider" name="medicalProvider" class="form-input" placeholder="Hospital/Clinic Name">
+              </div>
+              <div class="form-group">
+                <label for="estimatedCost" class="form-label">Estimated Cost (₹)</label>
+                <input type="number" id="estimatedCost" name="estimatedCost" class="form-input" placeholder="0.00">
+              </div>
+              <div class="form-group full-width">
+                <label for="medicalDetails" class="form-label">Medical Details</label>
+                <textarea id="medicalDetails" name="medicalDetails" class="form-textarea" rows="3" placeholder="Describe injuries, diagnosis, treatment plan..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUPPORTING DOCUMENTS -->
+          <div class="form-section">
+            <h3 class="section-title">Supporting Documents</h3>
+            <div class="document-upload">
+              <div class="upload-item">
+                <label for="policeReport" class="upload-label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Police Report
+                </label>
+                <input type="file" id="policeReport" name="policeReport" class="upload-input" accept=".pdf,.jpg,.jpeg,.png">
+                <span class="upload-status">No file selected</span>
+              </div>
+              <div class="upload-item">
+                <label for="medicalRecords" class="upload-label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Medical Records
+                </label>
+                <input type="file" id="medicalRecords" name="medicalRecords" class="upload-input" accept=".pdf,.jpg,.jpeg,.png" multiple>
+                <span class="upload-status">No files selected</span>
+              </div>
+              <div class="upload-item">
+                <label for="incidentPhotos" class="upload-label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M1 12h6M17 12h6"/></svg>
+                  Incident Photos
+                </label>
+                <input type="file" id="incidentPhotos" name="incidentPhotos" class="upload-input" accept=".jpg,.jpeg,.png" multiple>
+                <span class="upload-status">No files selected</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- DECLARATION -->
+          <div class="form-section">
+            <h3 class="section-title">Declaration</h3>
+            <div class="declaration-box">
+              <div class="declaration-text">
+                <p>I hereby declare that the information provided in this claim form is true and complete to the best of my knowledge. I understand that any false statements or omissions may result in denial of the claim or legal action.</p>
+                <p>I authorize the release of any medical information necessary to process this claim.</p>
+              </div>
+              <div class="declaration-checkbox">
+                <input type="checkbox" id="declaration" name="declaration" required>
+                <label for="declaration" class="checkbox-label">I agree to the above declaration *</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- FORM ACTIONS -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" onclick="window.history.back()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit Claim</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/submit-claim.js"></script>
+</body>
+</html>
