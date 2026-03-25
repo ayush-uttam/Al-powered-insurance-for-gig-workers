@@ -29,7 +29,8 @@ signInForm.addEventListener('submit', function (e) {
     }
 
     // ALL filled → redirect
-    window.location.href = "dashboard.html";
+    localStorage.setItem("user", "loggedIn");  
+    window.location.href = "homepage.html";    
 });
 
 // ===============================
@@ -51,5 +52,6 @@ signUpForm.addEventListener('submit', function (e) {
     }
 
     // ALL filled → redirect
-    window.location.href = "dashboard.html";
+    localStorage.setItem("user", "loggedIn");  
+    window.location.href = "homepage.html";   
 });

@@ -248,3 +248,18 @@ document.querySelectorAll('.feature-card').forEach(card => {
 // (They're handled via the intersection observer above)
 
 console.log('%cGigShield ⚡ Loaded', 'color: #00FFD1; font-family: Syne, sans-serif; font-size: 14px; font-weight: 700;');
+
+// ── Fix: Scroll to section when coming from another page (#plans etc.) ──
+window.addEventListener("load", () => {
+  if (window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    if (target) {
+      const offset = navbar.offsetHeight + 16;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+
+      setTimeout(() => {
+        window.scrollTo({ top, behavior: "smooth" });
+      }, 100);
+    }
+  }
+});
