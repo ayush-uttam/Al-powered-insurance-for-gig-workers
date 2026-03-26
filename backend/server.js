@@ -9,6 +9,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ TEST ROUTE (ADD THIS)
+app.get("/", (req, res) => {
+    res.send("🚀 SafeRide Backend Running Successfully");
+});
+
 // Routes
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
