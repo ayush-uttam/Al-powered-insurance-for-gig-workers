@@ -63,7 +63,7 @@ app.use(cors());
 app.use(express.json());
 
 // ✅ Serve ALL static files (css, js, images)
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname, '../frontend/html')));
 
 // ✅ Serve HTML files from /html folder explicitly
 app.get("/", (req, res) => {
