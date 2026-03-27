@@ -62,28 +62,44 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve frontend
+// ✅ Serve ALL static files (css, js, images)
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Routes
+// ✅ Serve HTML files from /html folder explicitly
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/html/homepage.html'));
+});
+
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/html/dashboard.html'));
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/html/login.html'));
+});
+
+app.get("/profile", (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/html/profile.html'));
+});
+
+app.get("/claims", (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/html/claims.html'));
+});
+
+app.get("/submit-claim", (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/html/submit-claim.html'));
+});
+
+// ✅ API routes
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
-.then(() => {
-    console.log("✅ MongoDB Connected");
-})
-.catch((err) => {
-    console.log("❌ MongoDB Error:", err);
-});
+.then(() => console.log("✅ MongoDB Connected"))
+.catch((err) => console.log("❌ MongoDB Error:", err));
 
-// ✅ REMOVE this ❌
-// app.get("/", (req, res) => {
-//     res.send("🚀 SafeRide Backend Running Successfully");
-// });
-
-// ✅ Fallback to frontend
+// ❗ Fallback (optional)
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/html/homepage.html'));
 });
@@ -92,7 +108,5 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
-
-console.log("MONGO_URI:", process.env.MONGO_URI);
