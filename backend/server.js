@@ -44,6 +44,6 @@ app.listen(PORT, () => {
 
 console.log("MONGO_URI:", process.env.MONGO_URI);
 
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
