@@ -1,5 +1,10 @@
 require('dotenv').config();
 
+const path = require('path');
+
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, '../frontend')));
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -37,3 +42,7 @@ app.listen(PORT, () => {
 });
 
 console.log("MONGO_URI:", process.env.MONGO_URI);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
