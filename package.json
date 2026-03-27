@@ -4,9 +4,9 @@
   "description": "India’s gig economy workers from platforms like Zomato, Swiggy, Zepto, Amazon, and Dunzo rely heavily on daily deliveries for their income. However, external disruptions such as: -Extreme heat -Heavy rainfall -Flooding -Severe air pollution -Curfews or local strikes",
   "main": "backend/server.js",
   "scripts": {
-  "start": "node backend/server.js",
-  "dev": "nodemon backend/server.js"
-},
+    "start": "node backend/server.js",
+    "dev": "cd backend && npm run dev"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DhruvSoni021/AI-powered-insurance-for-gig-workers.git"
@@ -21,9 +21,11 @@
   "homepage": "https://github.com/DhruvSoni021/AI-powered-insurance-for-gig-workers#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "concurrently": "^9.2.1",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "mongodb": "^7.1.1",
     "mongoose": "^9.3.3"
   },
   "devDependencies": {
