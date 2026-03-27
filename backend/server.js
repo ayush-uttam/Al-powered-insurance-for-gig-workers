@@ -85,7 +85,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 // ✅ Fallback to frontend
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  res.sendFile(path.join(__dirname, '../frontend/homepage.html'));
 });
 
 // Start Server
