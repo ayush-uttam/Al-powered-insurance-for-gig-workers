@@ -31,7 +31,7 @@ signInForm.addEventListener('submit', async function (e) {
 
     try {
 
-        const response = await fetch("http://localhost:5000/api/auth/login", {
+        const response = await fetch("/api/auth/login", {
 
             method: "POST",
 
@@ -94,7 +94,7 @@ signUpForm.addEventListener('submit', async function (e) {
 
     try {
 
-        const response = await fetch("http://localhost:5000/api/auth/signup", {
+        const response = await fetch("/api/auth/signup", {
 
             method: "POST",
 
