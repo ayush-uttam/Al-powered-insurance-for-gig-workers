@@ -1,4 +1,4 @@
-# 🚀 GIGSHIELD  
+# 🚀 SafeRideAI(GIGSHIELD)
 ### AI-Powered Parametric Income Insurance for India’s Gig Workers  
 
 > ⚡ From uncertainty to financial security — protecting gig workers with intelligent automation  
@@ -28,7 +28,7 @@ Such disruptions can lead to **20–30% loss in weekly income**, directly impact
 
 ## 💡 Our Solution  
 
-**GIGSHIELD** is an **AI-powered parametric insurance platform** that transforms traditional insurance into a **fully automated, event-driven system**.
+**safeRideAI** is an **AI-powered parametric insurance platform** that transforms traditional insurance into a **fully automated, event-driven system**.
 
 ### Key Capabilities:
 
@@ -331,7 +331,7 @@ Payments: Razorpay
 
 ---
 
-## 🏆 Why GIGSHIELD Stands Out  
+## 🏆 Why SafeRideAI Stands Out  
 
 - Fully parametric (correct approach)  
 - AI-driven decision making  
@@ -349,4 +349,4 @@ Dhruv Soni , Swapnil Dwivedi ,   Prashnat Mani Srivastva ,     Ayush Uttam ,    
 
 ## 📌 Final Statement  
 
-GIGSHIELD transforms insurance into a proactive, intelligent system that ensures gig workers are financially protected from income loss caused by real-world disruptions beyond their control.
+SafeRideAI(GIGSHIELD) transforms insurance into a proactive, intelligent system that ensures gig workers are financially protected from income loss caused by real-world disruptions beyond their control.
