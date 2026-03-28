@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShieldGig — Parametric Insurance for Gig Workers</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     PAYOUT FLASH OVERLAY
+═══════════════════════════════════════════ -->
+<div class="payout-flash" id="payoutFlash"></div>
+
+<!-- ═══════════════════════════════════════════
+     LIVE ALERT TOAST
+═══════════════════════════════════════════ -->
+<div class="live-alert" id="liveAlert">
+  <div class="alert-icon" id="alertIcon">🌧️</div>
+  <div>
+    <div class="alert-title" id="alertTitle">Parametric Trigger Fired!</div>
+    <div class="alert-body"  id="alertBody">Condition met. Auto-claim generated.</div>
+    <div class="alert-payout" id="alertPayout">₹500 → Processing</div>
+  </div>
+  <button class="alert-close" onclick="closeAlert()">✕</button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+
+  <!-- Header -->
+  <div class="sidebar-header">
+    <div class="logo">Shield<span>Gig</span></div>
+    <button class="toggle-btn" id="sidebarToggle" title="Toggle sidebar">‹</button>
+  </div>
+
+  <!-- Live status -->
+  <div class="sidebar-status">
+    <div class="status-dot"></div>
+    <span class="status-text">Engine Live · 5 Triggers</span>
+  </div>
+
+  <!-- MAIN NAVIGATION -->
+  <div class="nav-section">
+    <div class="nav-section-label">Navigation</div>
+
+    <div class="nav-item active" data-page="home">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+      <div class="tooltip">Home</div>
+    </div>
+
+    <div class="nav-item" data-page="dashboard">
+      <span class="nav-icon">📡</span>
+      <span class="nav-label">Live Monitor</span>
+      <span class="nav-badge" id="navBadgeLive">0</span>
+      <div class="tooltip">Live Monitor</div>
+    </div>
+
+    <div class="nav-item" data-page="plans">
+      <span class="nav-icon">🛡️</span>
+      <span class="nav-label">Plans</span>
+      <div class="tooltip">Plans</div>
+    </div>
+
+    <div class="nav-item" data-page="risk">
+      <span class="nav-icon">🗺️</span>
+      <span class="nav-label">Risk Map</span>
+      <div class="tooltip">Risk Map</div>
+    </div>
+
+    <div class="nav-item" data-page="analytics">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Analytics</span>
+      <div class="tooltip">Analytics</div>
+    </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <!-- ACCOUNT -->
+  <div class="nav-section">
+    <div class="nav-section-label">Account</div>
+
+    <div class="nav-item" data-page="coverage">
+      <span class="nav-icon">👷</span>
+      <span class="nav-label">My Coverage</span>
+      <div class="tooltip">My Coverage</div>
+    </div>
+
+    <div class="nav-item" data-page="fraud">
+      <span class="nav-icon">🔒</span>
+      <span class="nav-label">Fraud Guard</span>
+      <div class="tooltip">Fraud Guard</div>
+    </div>
+  </div>
+
+  <!-- Footer: clock -->
+  <div class="sidebar-footer">
+    <div class="sidebar-clock mono" id="liveTime">--:--:--</div>
+  </div>
+
+</aside>
+
+<!-- ═══════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════ -->
+<main class="main" id="main">
+
+  <!-- ══════════════ HOME ══════════════ -->
+  <div id="page-home" class="page active">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-content">
+        <div class="hero-tag">
+          <div class="status-dot"></div>
+          Parametric Insurance · No Claims · Instant Auto-Payout
+        </div>
+        <h1>Insurance that pays<br><span class="hl">automatically</span></h1>
+        <p class="hero-sub">
+          If the trigger condition is met → you get paid. No forms, no approval, no waiting.
+          Real-time sensors protect your gig income the instant a threshold is crossed.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="navigateTo('plans')">Get Weekly Coverage — from ₹20/wk</button>
+          <button class="btn btn-outline" onclick="navigateTo('dashboard')">Watch Live Triggers →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div style="padding: 0 2.5rem;">
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-label">Auto Payout Speed</div>
+          <div class="metric-value text-accent">&lt;60s</div>
+          <div class="metric-sub up">⚡ Instant trigger</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Workers Protected</div>
+          <div class="metric-value">8,420</div>
+          <div class="metric-sub up">↑ Growing weekly</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Auto Claims Today</div>
+          <div class="metric-value text-accent" id="home-claims">0</div>
+          <div class="metric-sub">0 manual actions</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Fraud Blocked</div>
+          <div class="metric-value">₹2.1L</div>
+          <div class="metric-sub up">AI detection</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Plans from</div>
+          <div class="metric-value text-accent">₹20</div>
+          <div class="metric-sub">Per week only</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How it works -->
+    <div style="padding: 1.5rem 2.5rem 3rem;">
+      <div class="section-label">How It Works</div>
+      <div style="font-family:'Syne',sans-serif; font-size:1.7rem; font-weight:800; letter-spacing:-0.5px; margin-bottom:0.5rem;">
+        Parametric = <span class="text-accent">IF this → THEN pay</span>
+      </div>
+      <p class="text-muted" style="max-width:560px; line-height:1.7; margin-bottom:2rem; font-size:0.9rem;">
+        Traditional insurance makes you prove your loss. Parametric insurance watches real-time conditions and pays you the moment a threshold is crossed — zero human involvement.
+      </p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-bottom:2rem;">
+        <div class="card" style="border-left:3px solid var(--accent);">
+          <div style="font-size:0.68rem; font-weight:700; color:var(--accent); letter-spacing:1px; margin-bottom:0.875rem;">01 ──</div>
+          <div style="font-size:1.75rem; margin-bottom:0.75rem;">📋</div>
+          <div style="font-weight:700; margin-bottom:0.4rem;">Pick Your Plan</div>
+          <div class="text-muted fs-sm" style="line-height:1.6;">Choose coverage by job type. Weekly plans start at ₹20. Cancel anytime.</div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--accent4);">
+          <div style="font-size:0.68rem; font-weight:700; color:var(--accent4); letter-spacing:1px; margin-bottom:0.875rem;">02 ──</div>
+          <div style="font-size:1.75rem; margin-bottom:0.75rem;">📡</div>
+          <div style="font-weight:700; margin-bottom:0.4rem;">System Monitors</div>
+          <div class="text-muted fs-sm" style="line-height:1.6;">Our engine watches weather, AQI, traffic & platform data 24/7 in real-time.</div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--warning);">
+          <div style="font-size:0.68rem; font-weight:700; color:var(--warning); letter-spacing:1px; margin-bottom:0.875rem;">03 ──</div>
+          <div style="font-size:1.75rem; margin-bottom:0.75rem;">⚡</div>
+          <div style="font-weight:700; margin-bottom:0.4rem;">Trigger Fires</div>
+          <div class="text-muted fs-sm" style="line-height:1.6;">Rainfall &gt;50mm? AQI &gt;300? The system detects it automatically — no input needed.</div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--success);">
+          <div style="font-size:0.68rem; font-weight:700; color:var(--success); letter-spacing:1px; margin-bottom:0.875rem;">04 ──</div>
+          <div style="font-size:1.75rem; margin-bottom:0.75rem;">💸</div>
+          <div style="font-weight:700; margin-bottom:0.4rem;">Auto Payout</div>
+          <div class="text-muted fs-sm" style="line-height:1.6;">Money hits your account in &lt;60 seconds. No form, no approval, no rejection.</div>
+        </div>
+      </div>
+
+      <!-- Comparison -->
+      <div class="compare-box">
+        <div class="section-label">The Difference</div>
+        <div class="compare-cols">
+          <div>
+            <div class="compare-col-title text-danger">❌ Traditional Insurance</div>
+            <div class="compare-item">→ Submit claim manually after loss</div>
+            <div class="compare-item">→ Wait for admin review (days–weeks)</div>
+            <div class="compare-item">→ Prove your loss with documents</div>
+            <div class="compare-item">→ Risk of rejection or partial payout</div>
+            <div class="compare-item">→ Stressful, time-consuming process</div>
+          </div>
+          <div>
+            <div class="compare-col-title text-accent">✅ ShieldGig Parametric</div>
+            <div class="compare-item good">→ System detects trigger automatically</div>
+            <div class="compare-item good">→ No review — pre-agreed terms</div>
+            <div class="compare-item good">→ Payout in under 60 seconds</div>
+            <div class="compare-item good">→ Zero rejection if condition met</div>
+            <div class="compare-item good">→ You focus on your work, we handle it</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ LIVE MONITOR ══════════════ -->
+  <div id="page-dashboard" class="page">
+    <div style="padding: 2.5rem;">
+
+      <div class="page-header">
+        <div class="page-header-top">
+          <div>
+            <div class="page-title">Live Parametric Monitor</div>
+            <div class="page-sub">Real-time trigger engine · Auto-claim system · Zero human intervention</div>
+          </div>
+          <span class="badge badge-live">● ENGINE LIVE</span>
+        </div>
+      </div>
+
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-label">Active Triggers</div>
+          <div class="metric-value text-accent">2</div>
+          <div class="metric-sub warn">⚡ Firing now</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Auto Claims Today</div>
+          <div class="metric-value" id="m-claims">0</div>
+          <div class="metric-sub up">↑ 100% auto</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Paid Out Today</div>
+          <div class="metric-value text-accent mono" id="m-payout">₹0</div>
+          <div class="metric-sub up">↑ Instant transfer</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Manual Claims</div>
+          <div class="metric-value text-accent">0</div>
+          <div class="metric-sub">None — ever</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">System Uptime</div>
+          <div class="metric-value">99.9%</div>
+          <div class="metric-sub up">● All systems OK</div>
+        </div>
+      </div>
+
+      <div class="grid-dash">
+
+        <!-- LEFT COLUMN -->
+        <div style="display:flex; flex-direction:column; gap:1.5rem;">
+
+          <!-- Trigger Engine -->
+          <div class="card">
+            <div class="card-title">
+              <div class="card-title-left">Parametric Trigger Engine</div>
+              <span class="badge badge-live">● LIVE</span>
+            </div>
+            <div class="trigger-list" id="triggerList">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Auto-flow diagram -->
+            <div class="auto-flow">
+              <div class="af-step" id="af1">Monitoring</div>
+              <div class="af-arrow">→</div>
+              <div class="af-step" id="af2">Condition Check</div>
+              <div class="af-arrow">→</div>
+              <div class="af-step" id="af3">Auto Claim</div>
+              <div class="af-arrow">→</div>
+              <div class="af-step" id="af4">Payout</div>
+              <div class="af-arrow">→</div>
+              <div class="af-step" id="af5">Notify Worker</div>
+            </div>
+          </div>
+
+          <!-- AI Risk Assessment -->
+          <div class="card">
+            <div class="card-title">
+              <div class="card-title-left">AI Risk Assessment</div>
+              <span class="badge badge-ai">ML Model</span>
+            </div>
+
+            <div class="risk-meter-row">
+              <div class="risk-meter-label">
+                <span>🌧️ Rainfall Risk</span>
+                <span class="val text-accent" id="riskRainLabel">0%</span>
+              </div>
+              <div class="risk-bar"><div class="risk-fill risk-high" id="riskRainBar" style="width:0%"></div></div>
+            </div>
+
+            <div class="risk-meter-row">
+              <div class="risk-meter-label">
+                <span>☁️ AQI Risk</span>
+                <span class="val" id="riskAqiLabel">0%</span>
+              </div>
+              <div class="risk-bar"><div class="risk-fill risk-med" id="riskAqiBar" style="width:0%"></div></div>
+            </div>
+
+            <div class="risk-meter-row">
+              <div class="risk-meter-label">
+                <span>🚦 Traffic Disruption</span>
+                <span class="val" id="riskTrafficLabel">0%</span>
+              </div>
+              <div class="risk-bar"><div class="risk-fill risk-med" id="riskTrafficBar" style="width:0%"></div></div>
+            </div>
+
+            <div class="risk-meter-row">
+              <div class="risk-meter-label">
+                <span>📱 Platform Downtime</span>
+                <span class="val" id="riskPlatformLabel">0%</span>
+              </div>
+              <div class="risk-bar"><div class="risk-fill risk-low" id="riskPlatformBar" style="width:0%"></div></div>
+            </div>
+
+            <p class="text-muted fs-xs mt-2" style="line-height:1.6;">
+              🤖 ML model analyses 12 environmental + historical factors. High-risk zones auto-adjust weekly premiums.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div style="display:flex; flex-direction:column; gap:1.5rem;">
+
+          <!-- Auto Claim Feed -->
+          <div class="card">
+            <div class="card-title">
+              <div class="card-title-left">Auto-Generated Claims</div>
+              <span class="badge badge-live">● LIVE</span>
+            </div>
+            <div class="claim-feed" id="claimFeed">
+              <div class="feed-placeholder" style="text-align:center; padding:2rem 0; color:var(--text2); font-size:0.82rem;">
+                Waiting for triggers…<br>
+                <span class="mono fs-xs">System monitoring 24/7</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fraud Detection -->
+          <div class="card">
+            <div class="card-title">Fraud Detection Shield</div>
+            <div class="fraud-flags">
+              <div class="flag-item">
+                <div class="flag-icon">📍</div>
+                <div>
+                  <div class="flag-title">Location Validation</div>
+                  <div class="flag-desc text-muted fs-xs">Worker GPS matches trigger zone</div>
+                </div>
+                <span class="flag-badge fb-safe">PASS</span>
+              </div>
+              <div class="flag-item">
+                <div class="flag-icon">🔁</div>
+                <div>
+                  <div class="flag-title">Duplicate Claim Check</div>
+                  <div class="flag-desc text-muted fs-xs">No duplicate in last 24h window</div>
+                </div>
+                <span class="flag-badge fb-safe">PASS</span>
+              </div>
+              <div class="flag-item">
+                <div class="flag-icon">📅</div>
+                <div>
+                  <div class="flag-title">Active Policy Check</div>
+                  <div class="flag-desc text-muted fs-xs">Weekly subscription valid</div>
+                </div>
+                <span class="flag-badge fb-safe">PASS</span>
+              </div>
+              <div class="flag-item">
+                <div class="flag-icon">⏱️</div>
+                <div>
+                  <div class="flag-title">Claim Velocity Check</div>
+                  <div class="flag-desc text-muted fs-xs">Normal claim rate detected</div>
+                </div>
+                <span class="flag-badge fb-safe">PASS</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ PLANS ══════════════ -->
+  <div id="page-plans" class="page">
+    <div style="padding: 2.5rem;">
+
+      <div class="page-header" style="text-align:center; max-width:620px; margin:0 auto 2rem;">
+        <div class="section-label">Weekly Plans</div>
+        <div class="page-title">Coverage for every gig worker</div>
+        <div class="page-sub mt-1">
+          All plans use parametric triggers — no claim forms, no approval. Pay weekly, cancel anytime.
+        </div>
+      </div>
+
+      <!-- Pricing toggle -->
+      <div class="pricing-toggle">
+        <button class="pt-opt active" data-mode="weekly"   onclick="setPricing('weekly')">Weekly</button>
+        <button class="pt-opt"        data-mode="monthly"  onclick="setPricing('monthly')">Monthly (–20%)</button>
+      </div>
+
+      <div class="plans-grid">
+
+        <!-- Plan 1: Storm Shield -->
+        <div class="plan-card" onclick="selectPlan(this, 'Storm Shield')">
+          <div class="plan-icon">🌧️</div>
+          <div class="plan-name">Storm Shield</div>
+          <div class="plan-role">Delivery Workers · Bike Riders</div>
+          <div class="plan-price">
+            <span class="amount">₹20</span>
+            <span class="freq">/<strong>week</strong></span>
+          </div>
+          <div class="plan-trigger-label">Parametric Triggers</div>
+          <div class="plan-trigger-tags">
+            <span class="plan-tag">🌧️ Rain &gt;50mm</span>
+            <span class="plan-tag">💨 Wind &gt;60km/h</span>
+            <span class="plan-tag">⚡ Thunderstorm</span>
+          </div>
+          <div class="plan-payout-box">
+            <div><div class="pp-label">Per trigger</div><div class="pp-value">₹500</div></div>
+            <div><div class="pp-label">Max/week</div><div class="pp-value">₹2,000</div></div>
+          </div>
+          <button class="btn-plan">Activate Coverage</button>
+        </div>
+
+        <!-- Plan 2: Air Guard (POPULAR) -->
+        <div class="plan-card selected" onclick="selectPlan(this, 'Air Guard')">
+          <div class="plan-popular-badge">MOST POPULAR</div>
+          <div class="plan-icon">😷</div>
+          <div class="plan-name">Air Guard</div>
+          <div class="plan-role">All Gig Workers · Urban Areas</div>
+          <div class="plan-price">
+            <span class="amount">₹35</span>
+            <span class="freq">/<strong>week</strong></span>
+          </div>
+          <div class="plan-trigger-label">Parametric Triggers</div>
+          <div class="plan-trigger-tags">
+            <span class="plan-tag">☁️ AQI &gt;300</span>
+            <span class="plan-tag">🌫️ AQI &gt;250 (3h+)</span>
+            <span class="plan-tag">🌧️ Rain &gt;50mm</span>
+            <span class="plan-tag">⚡ Thunderstorm</span>
+          </div>
+          <div class="plan-payout-box">
+            <div><div class="pp-label">Per trigger</div><div class="pp-value">₹750</div></div>
+            <div><div class="pp-label">Max/week</div><div class="pp-value">₹3,500</div></div>
+          </div>
+          <button class="btn-plan chosen">✓ Active — Coverage Running</button>
+        </div>
+
+        <!-- Plan 3: Road Warrior -->
+        <div class="plan-card" onclick="selectPlan(this, 'Road Warrior')">
+          <div class="plan-icon">🚗</div>
+          <div class="plan-name">Road Warrior</div>
+          <div class="plan-role">Cab Drivers · Auto Drivers</div>
+          <div class="plan-price">
+            <span class="amount">₹45</span>
+            <span class="freq">/<strong>week</strong></span>
+          </div>
+          <div class="plan-trigger-label">Parametric Triggers</div>
+          <div class="plan-trigger-tags">
+            <span class="plan-tag">🚦 Curfew / Strike</span>
+            <span class="plan-tag">🚫 Route Blocked</span>
+            <span class="plan-tag">🌧️ Rain &gt;50mm</span>
+            <span class="plan-tag">📱 App Downtime</span>
+          </div>
+          <div class="plan-payout-box">
+            <div><div class="pp-label">Per trigger</div><div class="pp-value">₹1,000</div></div>
+            <div><div class="pp-label">Max/week</div><div class="pp-value">₹4,500</div></div>
+          </div>
+          <button class="btn-plan">Activate Coverage</button>
+        </div>
+
+        <!-- Plan 4: Freelancer Pro -->
+        <div class="plan-card" onclick="selectPlan(this, 'Freelancer Pro')">
+          <div class="plan-icon">💻</div>
+          <div class="plan-name">Freelancer Pro</div>
+          <div class="plan-role">Online Freelancers · WFH Workers</div>
+          <div class="plan-price">
+            <span class="amount">₹25</span>
+            <span class="freq">/<strong>week</strong></span>
+          </div>
+          <div class="plan-trigger-label">Parametric Triggers</div>
+          <div class="plan-trigger-tags">
+            <span class="plan-tag">🔌 Power Outage &gt;4h</span>
+            <span class="plan-tag">📶 ISP Outage</span>
+            <span class="plan-tag">💻 Platform Down</span>
+          </div>
+          <div class="plan-payout-box">
+            <div><div class="pp-label">Per trigger</div><div class="pp-value">₹600</div></div>
+            <div><div class="pp-label">Max/week</div><div class="pp-value">₹2,500</div></div>
+          </div>
+          <button class="btn-plan">Activate Coverage</button>
+        </div>
+
+        <!-- Plan 5: Heat Shield -->
+        <div class="plan-card" onclick="selectPlan(this, 'Heat Shield')">
+          <div class="plan-icon">🌡️</div>
+          <div class="plan-name">Heat Shield</div>
+          <div class="plan-role">Outdoor Workers · Construction</div>
+          <div class="plan-price">
+            <span class="amount">₹30</span>
+            <span class="freq">/<strong>week</strong></span>
+          </div>
+          <div class="plan-trigger-label">Parametric Triggers</div>
+          <div class="plan-trigger-tags">
+            <span class="plan-tag">🌡️ Temp &gt;42°C</span>
+            <span class="plan-tag">🔥 Heat index &gt;50</span>
+            <span class="plan-tag">⚠️ Gov heat alert</span>
+          </div>
+          <div class="plan-payout-box">
+            <div><div class="pp-label">Per trigger</div><div class="pp-value">₹700</div></div>
+            <div><div class="pp-label">Max/week</div><div class="pp-value">₹3,000</div></div>
+          </div>
+          <button class="btn-plan">Activate Coverage</button>
+        </div>
+
+        <!-- Plan 6: All-in-One -->
+        <div class="plan-card" onclick="selectPlan(this, 'Gig All-in-One')">
+          <div class="plan-icon">🛡️</div>
+          <div class="plan-name">Gig All-in-One</div>
+          <div class="plan-role">Maximum protection · All triggers</div>
+          <div class="plan-price">
+            <span class="amount">₹75</span>
+            <span class="freq">/<strong>week</strong></span>
+          </div>
+          <div class="plan-trigger-label">All Parametric Triggers</div>
+          <div class="plan-trigger-tags">
+            <span class="plan-tag">🌧️ Rain</span>
+            <span class="plan-tag">☁️ AQI</span>
+            <span class="plan-tag">🌡️ Heat</span>
+            <span class="plan-tag">🚦 Traffic</span>
+            <span class="plan-tag">📱 Downtime</span>
+            <span class="plan-tag">🔌 Power</span>
+          </div>
+          <div class="plan-payout-box">
+            <div><div class="pp-label">Per trigger</div><div class="pp-value">₹1,500</div></div>
+            <div><div class="pp-label">Max/week</div><div class="pp-value">₹8,000</div></div>
+          </div>
+          <button class="btn-plan">Activate Coverage</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ RISK MAP ══════════════ -->
+  <div id="page-risk" class="page">
+    <div style="padding: 2.5rem;">
+
+      <div class="page-header">
+        <div class="page-header-top">
+          <div>
+            <div class="page-title">AI Risk Zone Map</div>
+            <div class="page-sub">Dynamic zone assessment · Updates every 5 min · Drives AI premium pricing</div>
+          </div>
+          <span class="badge badge-live">● LIVE</span>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="card mb-3">
+        <div class="card-title">Coverage Zone Heatmap</div>
+        <div class="map-grid" id="riskMap"></div>
+        <div class="map-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(0,229,160,0.35)"></div>Low Risk</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(255,170,0,0.5)"></div>Medium Risk</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(255,68,102,0.5)"></div>High Risk</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(255,68,102,0.8)"></div>Critical</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Zone counts -->
+        <div class="card">
+          <div class="card-title">Zone Risk Summary</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-top:0.5rem;">
+            <div style="background:rgba(0,229,160,0.05); border:1px solid rgba(0,229,160,0.15); border-radius:var(--radius-sm); padding:0.875rem;">
+              <div class="fs-xs text-muted fw-700" style="letter-spacing:0.5px; text-transform:uppercase;">Low Risk</div>
+              <div style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; color:var(--accent);" id="zLow">--</div>
+            </div>
+            <div style="background:rgba(255,170,0,0.05); border:1px solid rgba(255,170,0,0.15); border-radius:var(--radius-sm); padding:0.875rem;">
+              <div class="fs-xs text-muted fw-700" style="letter-spacing:0.5px; text-transform:uppercase;">Medium Risk</div>
+              <div style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; color:var(--warning);" id="zMed">--</div>
+            </div>
+            <div style="background:rgba(255,68,102,0.05); border:1px solid rgba(255,68,102,0.15); border-radius:var(--radius-sm); padding:0.875rem;">
+              <div class="fs-xs text-muted fw-700" style="letter-spacing:0.5px; text-transform:uppercase;">High Risk</div>
+              <div style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; color:var(--danger);" id="zHigh">--</div>
+            </div>
+            <div style="background:rgba(255,68,102,0.1); border:1px solid rgba(255,68,102,0.3); border-radius:var(--radius-sm); padding:0.875rem;">
+              <div class="fs-xs text-muted fw-700" style="letter-spacing:0.5px; text-transform:uppercase;">Critical</div>
+              <div style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; color:var(--danger);" id="zCrit">--</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Premium Adjustment -->
+        <div class="card">
+          <div class="card-title">
+            <div class="card-title-left">AI Premium Adjustment</div>
+            <span class="badge badge-ai">AI</span>
+          </div>
+          <p class="text-muted fs-sm mt-1 mb-3" style="line-height:1.6;">
+            ML model adjusts weekly premiums per zone in real-time. High-risk zones get modest surcharge; safe zones get discounts.
+          </p>
+          <div class="risk-meter-row">
+            <div class="risk-meter-label"><span>Zone: Indiranagar</span><span class="val text-accent">+₹5/wk</span></div>
+            <div class="risk-bar"><div class="risk-fill risk-high" style="width:80%"></div></div>
+          </div>
+          <div class="risk-meter-row">
+            <div class="risk-meter-label"><span>Zone: Koramangala</span><span class="val text-warning">+₹2/wk</span></div>
+            <div class="risk-bar"><div class="risk-fill risk-med" style="width:45%"></div></div>
+          </div>
+          <div class="risk-meter-row">
+            <div class="risk-meter-label"><span>Zone: Whitefield</span><span class="val text-accent">−₹3/wk</span></div>
+            <div class="risk-bar"><div class="risk-fill risk-low" style="width:20%"></div></div>
+          </div>
+          <div class="risk-meter-row">
+            <div class="risk-meter-label"><span>Zone: Jayanagar</span><span class="val text-muted">±₹0/wk</span></div>
+            <div class="risk-bar"><div class="risk-fill risk-low" style="width:12%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ ANALYTICS ══════════════ -->
+  <div id="page-analytics" class="page">
+    <div style="padding: 2.5rem;">
+
+      <div class="page-header">
+        <div class="page-title">Analytics & Predictions</div>
+        <div class="page-sub">Claim trends · Payout history · Trigger frequency · AI forecasting</div>
+      </div>
+
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-label">Claims (30d)</div>
+          <div class="metric-value text-accent">342</div>
+          <div class="metric-sub up">↑ 100% auto</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Payouts (30d)</div>
+          <div class="metric-value mono">₹1.71L</div>
+          <div class="metric-sub up">All &lt;60s</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Avg Payout</div>
+          <div class="metric-value mono">₹500</div>
+          <div class="metric-sub">Per event</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Fraud Blocked</div>
+          <div class="metric-value">17</div>
+          <div class="metric-sub warn">AI flagged</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Workers Paid</div>
+          <div class="metric-value">284</div>
+          <div class="metric-sub up">This month</div>
+        </div>
+      </div>
+
+      <div class="grid-2 mb-3">
+        <div class="card">
+          <div class="card-title">Daily Claims — Last 14 Days</div>
+          <div class="mini-chart" id="claimsChart"></div>
+          <div class="flex gap-2 mt-2 fs-xs text-muted flex-wrap">
+            <span>Peak: 42 claims (rain event)</span>
+            <span>·</span>
+            <span>Avg: 18/day</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Daily Payouts (₹000s)</div>
+          <div class="mini-chart" id="payoutChart"></div>
+          <div class="flex gap-2 mt-2 fs-xs flex-wrap">
+            <span style="color:var(--accent2)">■ Rain 42%</span>
+            <span style="color:var(--accent3)">■ AQI 28%</span>
+            <span style="color:var(--accent4)">■ Traffic 18%</span>
+            <span style="color:var(--accent)">■ Heat 12%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Trigger Frequency (30d)</div>
+          <div class="mt-2">
+            <div class="risk-meter-row">
+              <div class="risk-meter-label"><span>🌧️ Heavy Rainfall</span><span class="val mono">127</span></div>
+              <div class="risk-bar"><div class="risk-fill risk-high" style="width:85%"></div></div>
+            </div>
+            <div class="risk-meter-row">
+              <div class="risk-meter-label"><span>☁️ High AQI</span><span class="val mono">89</span></div>
+              <div class="risk-bar"><div class="risk-fill risk-med" style="width:60%"></div></div>
+            </div>
+            <div class="risk-meter-row">
+              <div class="risk-meter-label"><span>🚦 Traffic Disruption</span><span class="val mono">54</span></div>
+              <div class="risk-bar"><div class="risk-fill risk-med" style="width:36%"></div></div>
+            </div>
+            <div class="risk-meter-row">
+              <div class="risk-meter-label"><span>🌡️ Heat Wave</span><span class="val mono">38</span></div>
+              <div class="risk-bar"><div class="risk-fill risk-low" style="width:26%"></div></div>
+            </div>
+            <div class="risk-meter-row">
+              <div class="risk-meter-label"><span>📱 Platform Down</span><span class="val mono">34</span></div>
+              <div class="risk-bar"><div class="risk-fill risk-low" style="width:23%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <div class="card-title-left">7-Day AI Forecast</div>
+            <span class="badge badge-ai">AI</span>
+          </div>
+          <div class="mt-1">
+            <div class="forecast-row" style="border-color:rgba(255,68,102,0.2); background:rgba(255,68,102,0.04);">
+              <span class="fs-sm fw-700">Tomorrow</span>
+              <span class="fs-xs text-danger fw-700">HIGH rain 78%</span>
+            </div>
+            <div class="forecast-row" style="border-color:rgba(255,170,0,0.2); background:rgba(255,170,0,0.04);">
+              <span class="fs-sm fw-700">Day 2</span>
+              <span class="fs-xs text-warning fw-700">AQI spike 55%</span>
+            </div>
+            <div class="forecast-row" style="border-color:rgba(0,229,160,0.12); background:rgba(0,229,160,0.03);">
+              <span class="fs-sm fw-700">Day 3</span>
+              <span class="fs-xs text-accent fw-700">Low risk 12%</span>
+            </div>
+            <div class="forecast-row" style="border-color:rgba(255,170,0,0.15); background:rgba(255,170,0,0.03);">
+              <span class="fs-sm fw-700">Day 4–5</span>
+              <span class="fs-xs text-warning fw-700">Heat wave 65%</span>
+            </div>
+            <div class="forecast-row">
+              <span class="fs-sm fw-700">Day 6–7</span>
+              <span class="fs-xs text-muted fw-700">Uncertain</span>
+            </div>
+          </div>
+          <p class="fs-xs text-muted mt-2" style="line-height:1.6;">
+            🤖 Based on weather API trends + historical trigger patterns
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ MY COVERAGE ══════════════ -->
+  <div id="page-coverage" class="page">
+    <div style="padding: 2.5rem;">
+
+      <div class="page-header">
+        <div class="page-title">My Coverage</div>
+        <div class="page-sub">Worker dashboard · Active protection · Payout history</div>
+      </div>
+
+      <!-- Profile -->
+      <div class="profile-header">
+        <div class="avatar">👷</div>
+        <div>
+          <div class="profile-name">Rajan Kumar</div>
+          <div class="profile-role">Swiggy Delivery Partner · Bangalore</div>
+          <div class="profile-badges">
+            <span class="p-badge">✅ Verified Worker</span>
+            <span class="p-badge">⭐ 3-week streak</span>
+            <span class="p-badge">🛡️ Air Guard Active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coverage banner -->
+      <div class="coverage-banner">
+        <div>
+          <div style="font-weight:700;">🟢 Coverage Active — Week 3 of Cycle</div>
+          <div class="text-muted fs-sm mt-1">Air Guard Plan · Expires Sunday 11:59 PM · Auto-renews</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="mono text-accent fw-700">₹35 / week</div>
+          <div class="week-bar mt-1"><div class="week-fill" style="width:43%"></div></div>
+          <div class="fs-xs text-muted mt-1">3 / 7 days</div>
+        </div>
+      </div>
+
+      <div class="grid-2 mb-3">
+        <div class="card">
+          <div class="card-title">Triggers This Week</div>
+          <div style="display:flex; flex-direction:column; gap:0.6rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0.75rem; background:rgba(0,229,160,0.04); border:1px solid rgba(0,229,160,0.12); border-radius:var(--radius-sm);">
+              <div>
+                <div class="fs-sm fw-700">🌧️ Rainfall Trigger</div>
+                <div class="fs-xs text-muted">Mon 3:40 PM · 72mm recorded</div>
+              </div>
+              <div class="mono text-accent fw-700">₹750</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0.75rem; background:rgba(255,255,255,0.02); border:1px solid var(--card-border); border-radius:var(--radius-sm);">
+              <div>
+                <div class="fs-sm fw-700">☁️ AQI Trigger</div>
+                <div class="fs-xs text-muted">Tue 6:15 PM · AQI 318</div>
+              </div>
+              <div class="mono text-accent fw-700">₹750</div>
+            </div>
+            <div class="divider"></div>
+            <div class="flex justify-between">
+              <span class="fs-sm fw-700">Total received this week</span>
+              <span class="mono text-accent" style="font-size:1.1rem; font-weight:800;">₹1,500</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">30-Day Summary</div>
+          <div style="display:flex; flex-direction:column; gap:0.6rem;">
+            <div class="flex justify-between"><span class="text-muted fs-sm">Paid this month</span><span class="mono fw-700">₹140</span></div>
+            <div class="flex justify-between"><span class="text-muted fs-sm">Received this month</span><span class="mono text-accent fw-700">₹3,750</span></div>
+            <div class="divider"></div>
+            <div class="flex justify-between"><span class="fs-sm fw-700">Net benefit</span><span class="mono text-accent" style="font-size:1.1rem; font-weight:800;">+₹3,610</span></div>
+            <div class="divider"></div>
+            <div class="flex justify-between"><span class="text-muted fs-sm">Auto-claims received</span><span class="fw-700">5</span></div>
+            <div class="flex justify-between"><span class="text-muted fs-sm">Manual forms filled</span><span class="fw-700 text-accent">0 🎉</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="card">
+        <div class="card-title">Activity Timeline</div>
+        <div class="timeline mt-2">
+          <div class="tl-item">
+            <div class="tl-spine"><div class="tl-dot auto"></div><div class="tl-line"></div></div>
+            <div class="tl-body" style="padding-bottom:1.25rem;">
+              <div class="tl-title">⚡ Auto-Claim: AQI Trigger Fired</div>
+              <div class="tl-meta">Today · 6:15 PM · AQI reached 318 (threshold: 300)</div>
+              <div class="tl-amount">₹750 → Credited in 38 seconds</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-spine"><div class="tl-dot auto"></div><div class="tl-line"></div></div>
+            <div class="tl-body" style="padding-bottom:1.25rem;">
+              <div class="tl-title">⚡ Auto-Claim: Rainfall Trigger Fired</div>
+              <div class="tl-meta">Yesterday · 3:40 PM · 72mm rainfall (threshold: 50mm)</div>
+              <div class="tl-amount">₹750 → Credited in 22 seconds</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-spine"><div class="tl-dot info"></div><div class="tl-line"></div></div>
+            <div class="tl-body" style="padding-bottom:1.25rem;">
+              <div class="tl-title">🔄 Weekly Subscription Renewed</div>
+              <div class="tl-meta">3 days ago · Air Guard Plan · ₹35 debited automatically</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-spine"><div class="tl-dot auto"></div></div>
+            <div class="tl-body">
+              <div class="tl-title">⚡ Auto-Claim: Rainfall Trigger Fired</div>
+              <div class="tl-meta">5 days ago · 58mm rainfall recorded</div>
+              <div class="tl-amount">₹750 → Credited in 41 seconds</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ FRAUD GUARD ══════════════ -->
+  <div id="page-fraud" class="page">
+    <div style="padding: 2.5rem;">
+
+      <div class="page-header">
+        <div class="page-title">Fraud Guard</div>
+        <div class="page-sub">AI-powered fraud detection · Real-time validation · Zero false negatives</div>
+      </div>
+
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-label">Fraud Blocked (30d)</div>
+          <div class="metric-value text-danger">17</div>
+          <div class="metric-sub warn">AI detected</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Amount Saved</div>
+          <div class="metric-value mono">₹2.1L</div>
+          <div class="metric-sub up">Prevented loss</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Legit Claims</div>
+          <div class="metric-value text-accent">325</div>
+          <div class="metric-sub up">↑ 100% paid</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">False Positives</div>
+          <div class="metric-value text-accent">0</div>
+          <div class="metric-sub up">Perfect accuracy</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Active Validation Checks</div>
+          <div class="fraud-flags">
+            <div class="flag-item">
+              <div class="flag-icon">📍</div>
+              <div>
+                <div class="flag-title">Location Validation</div>
+                <div class="flag-desc text-muted fs-xs">Worker GPS must match the triggered risk zone within 5km radius</div>
+              </div>
+              <span class="flag-badge fb-safe">ACTIVE</span>
+            </div>
+            <div class="flag-item">
+              <div class="flag-icon">🔁</div>
+              <div>
+                <div class="flag-title">Duplicate Claim Detection</div>
+                <div class="flag-desc text-muted fs-xs">Blocks same worker from claiming twice per 24h window per trigger type</div>
+              </div>
+              <span class="flag-badge fb-safe">ACTIVE</span>
+            </div>
+            <div class="flag-item">
+              <div class="flag-icon">📅</div>
+              <div>
+                <div class="flag-title">Active Policy Verification</div>
+                <div class="flag-desc text-muted fs-xs">Confirms weekly subscription is current and payment is valid</div>
+              </div>
+              <span class="flag-badge fb-safe">ACTIVE</span>
+            </div>
+            <div class="flag-item">
+              <div class="flag-icon">⏱️</div>
+              <div>
+                <div class="flag-title">Claim Velocity Monitor</div>
+                <div class="flag-desc text-muted fs-xs">Flags abnormal claim patterns — e.g. 5+ claims in one hour</div>
+              </div>
+              <span class="flag-badge fb-safe">ACTIVE</span>
+            </div>
+            <div class="flag-item">
+              <div class="flag-icon">📡</div>
+              <div>
+                <div class="flag-title">Data Source Integrity</div>
+                <div class="flag-desc text-muted fs-xs">Cross-validates trigger values from 3 independent data feeds</div>
+              </div>
+              <span class="flag-badge fb-safe">ACTIVE</span>
+            </div>
+            <div class="flag-item">
+              <div class="flag-icon">🤖</div>
+              <div>
+                <div class="flag-title">Behavioural Anomaly Detection</div>
+                <div class="flag-desc text-muted fs-xs">ML model detects unusual patterns vs historical worker behaviour</div>
+              </div>
+              <span class="flag-badge fb-safe">ACTIVE</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Recent Fraud Detections</div>
+          <div style="display:flex; flex-direction:column; gap:0.6rem;">
+            <div class="flag-item" style="border-left:3px solid var(--danger);">
+              <div class="flag-icon">🚨</div>
+              <div>
+                <div class="flag-title">Duplicate Claim Blocked</div>
+                <div class="flag-desc text-muted fs-xs">Worker #4821 · 2nd AQI claim in 3h · Blocked</div>
+              </div>
+              <span class="flag-badge fb-danger">BLOCKED</span>
+            </div>
+            <div class="flag-item" style="border-left:3px solid var(--warning);">
+              <div class="flag-icon">⚠️</div>
+              <div>
+                <div class="flag-title">Location Mismatch</div>
+                <div class="flag-desc text-muted fs-xs">Worker #2134 · GPS 12km from trigger zone · Flagged</div>
+              </div>
+              <span class="flag-badge fb-warn">FLAGGED</span>
+            </div>
+            <div class="flag-item" style="border-left:3px solid var(--danger);">
+              <div class="flag-icon">🚨</div>
+              <div>
+                <div class="flag-title">Expired Policy</div>
+                <div class="flag-desc text-muted fs-xs">Worker #7092 · Subscription lapsed · Rejected</div>
+              </div>
+              <span class="flag-badge fb-danger">BLOCKED</span>
+            </div>
+            <div class="flag-item" style="border-left:3px solid var(--warning);">
+              <div class="flag-icon">⚠️</div>
+              <div>
+                <div class="flag-title">Velocity Anomaly</div>
+                <div class="flag-desc text-muted fs-xs">Worker #3310 · 6 claims in 2h · Under review</div>
+              </div>
+              <span class="flag-badge fb-warn">REVIEW</span>
+            </div>
+          </div>
+
+          <div class="card mt-3" style="background:rgba(0,229,160,0.03); border-color:rgba(0,229,160,0.12);">
+            <div class="fs-sm fw-700 mb-1 text-accent">Why Parametric Reduces Fraud</div>
+            <p class="fs-xs text-muted" style="line-height:1.7;">
+              Because payouts are triggered by <strong>objective external data</strong> (rainfall mm, AQI index, GPS coordinates) — not self-reported claims — the attack surface for fraud is dramatically smaller. A fraudster cannot fake a city-wide AQI reading or a verified weather event.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="main.js"></script>
+</body>
+</html>
