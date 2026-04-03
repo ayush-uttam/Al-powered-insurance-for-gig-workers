@@ -160,7 +160,8 @@ body {
 .nav-item.active .nav-icon { color: var(--accent); }
 .nav-icon { font-size: 1.1rem; width: 20px; text-align: center; flex-shrink: 0; }
 .nav-label { font-size: 0.875rem; font-weight: 600; transition: opacity 0.2s; }
-.sidebar.collapsed .nav-label { opacity: 0; width: 0; overflow: hidden; }
+.sidebar.collapsed .nav-item { gap: 0; padding-left: 0; padding-right: 0; justify-content: center; }
+.sidebar.collapsed .nav-label { opacity: 0; width: 0; overflow: hidden; margin: 0; padding: 0; }
 
 .nav-badge {
   margin-left: auto; font-size: 0.65rem; font-weight: 700;
