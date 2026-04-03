@@ -291,3 +291,73 @@
     background-color: #232f3e;
     color: #fff !important;
 }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .login-page {
+        padding: 20px;
+    }
+    .container {
+        width: 100%;
+        max-width: 420px;
+        min-height: auto;
+        border-radius: 20px;
+        flex-direction: column;
+        padding: 30px 15px;
+    }
+    .form-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+        left: 0;
+        top: 0;
+        padding: 0;
+        transition: none;
+    }
+    .container form {
+        padding: 0 15px;
+        height: auto;
+    }
+    .title {
+        margin-top: 20px;
+    }
+    
+    /* Hide desktop toggle panel */
+    .toggle-container {
+        display: none !important;
+    }
+    
+    /* Disable animation/transforms */
+    .sign-in, .sign-up {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+        z-index: 10 !important;
+    }
+    
+    /* Show only active form */
+    .container:not(.active) .sign-up {
+        display: none !important;
+    }
+    .container.active .sign-in {
+        display: none !important;
+    }
+    
+    /* Mobile text toggler */
+    .mobile-toggle {
+        display: block !important;
+        margin-top: 25px;
+        font-size: 13px !important;
+        text-align: center;
+        background: none !important;
+        border: none !important;
+        color: #666 !important;
+    }
+    .mobile-toggle span {
+        color: #FF9900 !important;
+        font-weight: 700 !important;
+        cursor: pointer;
+        font-size: 13px !important;
+    }
+}
+

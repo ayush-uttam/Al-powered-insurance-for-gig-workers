@@ -254,7 +254,6 @@ body {
 .grid-dash { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
 @media (max-width: 1100px) { .grid-dash { grid-template-columns: 1fr; } }
 @media (max-width: 900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
-@media (max-width: 768px) { .sidebar { transform: translateX(-100%); } .main { margin-left: 0 !important; } }
 
 /* BUTTONS */
 .btn {
@@ -472,3 +471,61 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+/* ═══════════════════════════════════════════
+   MOBILE RESPONSIVENESS OVERRIDES
+═══════════════════════════════════════════ */
+.mobile-header {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 60px; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  z-index: 100; padding: 0 1rem;
+  align-items: center; justify-content: space-between;
+}
+.mobile-header .logo { font-size: 1.15rem; }
+.hamburger-btn { background: none; border: none; color: var(--text); font-size: 1.6rem; cursor: pointer; padding: 5px; }
+
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(3px);
+  z-index: 199; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+}
+.sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+
+@media (max-width: 768px) {
+  /* Show Mobile Nav Components */
+  .mobile-header { display: flex; }
+  .sidebar-overlay { display: block; }
+  
+  /* Restructure Metrics & Containers */
+  .page { padding: 1.5rem 1rem 3rem !important; }
+  .page-header-top { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .hero { padding: 4rem 1rem 3rem !important; }
+  .metrics-row { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  .compare-cols { grid-template-columns: 1fr; gap: 1.5rem; }
+  .profile-header { flex-direction: column; text-align: center; }
+
+  /* Drawer Sidebar Override */
+  .sidebar {
+    left: 0; width: 260px !important;
+    transform: translateX(0);
+    z-index: 200;
+  }
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+    width: 260px !important;
+  }
+  
+  /* Re-enable full contents when drawer is visually visible even though it lacks the .collapsed logic normally */
+  .sidebar.collapsed .logo { opacity: 1; width: auto; }
+  .sidebar.collapsed .sidebar-status { justify-content: flex-start; padding: 0.75rem 1rem; margin: 0.75rem 0.75rem 0; }
+  .sidebar.collapsed .sidebar-status .status-text { display: inline-block; }
+  .sidebar.collapsed .nav-section-label { opacity: 1; }
+  .sidebar.collapsed .nav-label { opacity: 1; width: auto; }
+  .sidebar.collapsed .nav-badge { display: inline-block; }
+  .sidebar.collapsed .sidebar-clock { font-size: 0.8rem; }
+  
+  .main { margin-left: 0 !important; padding-top: 60px; }
+  .main.collapsed { margin-left: 0 !important; }
+}

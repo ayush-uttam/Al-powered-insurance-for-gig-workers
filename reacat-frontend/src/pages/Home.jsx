@@ -40,13 +40,9 @@ function MiniChart({ data, colorClasses }) {
 
 export default function Home() {
   const navigate = useNavigate();
+  const [page, setPage]           = useState("home");
+  const [collapsed, setCollapsed] = useState(window.innerWidth <= 768);
   const user = getUser();
-
-  // Sidebar
-  const [collapsed, setCollapsed] = useState(false);
-
-  // Navigation
-  const [page, setPage] = useState("home");
 
   // Live clock
   const [clock, setClock]   = useState("--:--:--");
@@ -236,7 +232,12 @@ export default function Home() {
   }, [dashData?.workerProfile?.city, fireClaim]);
 
   // ── Navigation helpers ────────────────────────────────────────
-  const navigateTo = (p) => setPage(p);
+  const navigateTo = (p) => {
+    setPage(p);
+    if (window.innerWidth <= 768) {
+      setCollapsed(true);
+    }
+  };
   const logout = () => { removeToken(); removeUser(); navigate("/"); };
 
   const getPrice = (i) => {
@@ -319,6 +320,20 @@ export default function Home() {
           <button className="alert-close" onClick={() => { setAlert(null); alertShowing.current = false; showNextAlert(); }}>✕</button>
         </div>
       )}
+
+      {/* ══════════════════════════════════════════════════════
+          MOBILE HEADER & OVERLAY
+      ══════════════════════════════════════════════════════ */}
+      <div className="mobile-header">
+        <div className="logo">
+          <span className="logo-safe">Safe</span>
+          <span className="logo-ride">Ride</span>
+          <span className="logo-ai">AI</span>
+        </div>
+        <button className="hamburger-btn" onClick={() => setCollapsed(false)}>☰</button>
+      </div>
+
+      <div className={`sidebar-overlay ${!collapsed ? "show" : ""}`} onClick={() => setCollapsed(true)} />
 
       {/* ══════════════════════════════════════════════════════
           SIDEBAR

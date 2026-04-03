@@ -152,6 +152,10 @@ export default function Login() {
             <button type="button" className="google-btn" onClick={googleSignUp}>
               Continue with Google (Quick Secure Login)
             </button>
+
+            <p className="mobile-toggle" style={{ display: "none" }}>
+              Already have an account? <span onClick={() => { setActive(false); setError(""); }}>Sign In</span>
+            </p>
           </form>
         </div>
 
@@ -205,6 +209,10 @@ export default function Login() {
 
             <p style={{ fontSize: "12px", marginTop: "10px" }}>
               🔍 AI monitors your ride in real-time for safety
+            </p>
+
+            <p className="mobile-toggle" style={{ display: "none" }}>
+              Don't have an account? <span onClick={() => { setActive(true); setError(""); }}>Sign Up</span>
             </p>
           </form>
         </div>
