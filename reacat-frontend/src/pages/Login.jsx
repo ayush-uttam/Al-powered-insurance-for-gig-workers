@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { authApi, setToken, setUser } from "../services/api";
+import { authApi, setToken, setUser, getToken } from "../services/api";
 import "../styles/login.css";
 
 export default function Login() {
@@ -14,6 +14,11 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
 
   useEffect(() => {
+    if (getToken()) {
+      navigate("/home");
+      return;
+    }
+
     const saved = localStorage.getItem("rememberedUser");
     if (saved) {
       try {
