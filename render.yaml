@@ -7,20 +7,3 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: saferide-frontend
-          envVarKey: RENDER_EXTERNAL_URL
-
-  - type: web
-    name: saferide-frontend
-    env: static
-    buildCommand: npm install --prefix reacat-frontend && npm run build --prefix reacat-frontend
-    staticPublishPath: ./reacat-frontend/dist
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: saferide-backend
-          envVarKey: RENDER_EXTERNAL_URL
