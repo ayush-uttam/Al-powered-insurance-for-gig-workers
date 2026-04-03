@@ -1,107 +1,96 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { supabase } from "../supabaseClient";  
+import { authApi, setToken, setUser } from "../services/api";
 import "../styles/login.css";
 
 export default function Login() {
   const navigate = useNavigate();
   const [active, setActive] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const [signInData, setSignInData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [signUpData, setSignUpData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [signInData, setSignInData] = useState({ email: "", password: "" });
+  const [signUpData, setSignUpData] = useState({ name: "", email: "", password: "" });
 
   const handleSignInChange = (e) => {
     const { name, value } = e.target;
-    setSignInData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setSignInData((prev) => ({ ...prev, [name]: value }));
+    setError("");
   };
 
   const handleSignUpChange = (e) => {
     const { name, value } = e.target;
-    setSignUpData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setSignUpData((prev) => ({ ...prev, [name]: value }));
+    setError("");
   };
 
+  // ── Sign In ──────────────────────────────────────────────────
   const handleSignIn = async (e) => {
     e.preventDefault();
+    const { email, password } = signInData;
 
-    const email = signInData.email.trim();
-    const password = signInData.password.trim();
-
-    if (!email || !password) {
-      alert("All fields are required");
+    if (!email.trim() || !password.trim()) {
+      setError("All fields are required");
       return;
     }
 
-    // const { data, error } = await supabase.auth.signInWithPassword({
-    //   email,
-    //   password,
-    // });
-
-    // if (error) {
-    //   alert(error.message);
-    //   return;
-    // }
-
-    alert("Login successful ✅");
-    navigate("/home");
+    setLoading(true);
+    setError("");
+    try {
+      const res = await authApi.login(email.trim(), password.trim());
+      setToken(res.token);
+      setUser(res.user);
+      navigate("/home");
+    } catch (err) {
+      setError(err.message || "Login failed. Please check your credentials.");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // ── Sign Up ──────────────────────────────────────────────────
   const handleSignUp = async (e) => {
     e.preventDefault();
+    const { name, email, password } = signUpData;
 
-    const name = signUpData.name.trim();
-    const email = signUpData.email.trim();
-    const password = signUpData.password.trim();
-
-    if (!name || !email || !password) {
-      alert("All fields are required");
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      setError("All fields are required");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
       return;
     }
 
-    // const { data, error } = await supabase.auth.signUp({
-    //   email,
-    //   password,
-    //   options: {
-    //     data: {
-    //       full_name: name,
-    //     },
-    //   },
-    // });
-
-    // if (error) {
-    //   alert(error.message);
-    //   return;
-    // }
-
-    alert("Signup successful ✅");
-    navigate("/home");
+    setLoading(true);
+    setError("");
+    try {
+      const res = await authApi.signup(name.trim(), email.trim(), password.trim());
+      setToken(res.token);
+      setUser(res.user);
+      navigate("/home");
+    } catch (err) {
+      setError(err.message || "Signup failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const googleSignUp = () => {
-    alert("Google Sign Up clicked");
-  };
+  const googleSignUp = () => alert("Google Sign Up — coming soon!");
 
   return (
     <div className="login-page">
       <div className={`container ${active ? "active" : ""}`} id="container">
+
+        {/* ── Sign Up Form ───────────────────────────────────── */}
         <div className="form-container sign-up">
           <form id="signupForm" onSubmit={handleSignUp}>
             <h1>Create Account</h1>
-
             <span>Use your email for registration</span>
+
+            {error && active && (
+              <p style={{ color: "#ff4d4d", fontSize: "13px", margin: "6px 0" }}>{error}</p>
+            )}
 
             <input
               type="email"
@@ -111,16 +100,14 @@ export default function Login() {
               onChange={handleSignUpChange}
               required
             />
-
             <input
               type="password"
               name="password"
-              placeholder="🔒 Password"
+              placeholder="🔒 Password (min 6 chars)"
               value={signUpData.password}
               onChange={handleSignUpChange}
               required
             />
-
             <input
               type="text"
               name="name"
@@ -130,20 +117,19 @@ export default function Login() {
               required
             />
 
-            <button type="submit">Sign Up</button>
+            <button type="submit" disabled={loading}>
+              {loading ? "Creating account…" : "Sign Up"}
+            </button>
 
             <p style={{ margin: "15px 0" }}>— OR —</p>
 
-            <button
-              type="button"
-              className="google-btn"
-              onClick={googleSignUp}
-            >
+            <button type="button" className="google-btn" onClick={googleSignUp}>
               Continue with Google (Quick Secure Login)
             </button>
           </form>
         </div>
 
+        {/* ── Sign In Form ───────────────────────────────────── */}
         <div className="form-container sign-in">
           <form id="signinForm" onSubmit={handleSignIn}>
             <div className="title">
@@ -154,8 +140,11 @@ export default function Login() {
             </div>
 
             <h2>Sign In</h2>
-
             <span>Use your email and password</span>
+
+            {error && !active && (
+              <p style={{ color: "#ff4d4d", fontSize: "13px", margin: "6px 0" }}>{error}</p>
+            )}
 
             <input
               type="email"
@@ -165,7 +154,6 @@ export default function Login() {
               onChange={handleSignInChange}
               required
             />
-
             <input
               type="password"
               name="password"
@@ -180,7 +168,10 @@ export default function Login() {
             </label>
 
             <a href="#">Forgot Your Password?</a>
-            <button type="submit">Sign In</button>
+
+            <button type="submit" disabled={loading}>
+              {loading ? "Signing in…" : "Sign In"}
+            </button>
 
             <p style={{ fontSize: "12px", marginTop: "10px" }}>
               🔍 AI monitors your ride in real-time for safety
@@ -188,39 +179,29 @@ export default function Login() {
           </form>
         </div>
 
+        {/* ── Sliding Toggle Panel ───────────────────────────── */}
         <div className="toggle-container">
           <div className="toggle">
             <div className="toggle-panel toggle-left">
               <h1>Welcome to SafeRide AI</h1>
               <p>AI-powered safety for smarter rides 🚗</p>
-              <button
-                type="button"
-                className="hidden"
-                onClick={() => setActive(false)}
-              >
+              <button type="button" className="hidden" onClick={() => { setActive(false); setError(""); }}>
                 Sign In
               </button>
             </div>
-
             <div className="toggle-panel toggle-right">
               <h1>Join SafeRide AI 🚗</h1>
-
               <p>Create an account to experience AI-powered ride safety</p>
-
               <p style={{ fontSize: "12px", marginTop: "10px", opacity: 0.8 }}>
                 🤖 Smart alerts • 📍 Live tracking • 🚨 Emergency detection
               </p>
-
-              <button
-                type="button"
-                className="hidden"
-                onClick={() => setActive(true)}
-              >
+              <button type="button" className="hidden" onClick={() => { setActive(true); setError(""); }}>
                 Sign Up
               </button>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );

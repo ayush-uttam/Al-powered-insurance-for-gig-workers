@@ -9,28 +9,23 @@
 
 /* ===== BODY BACKGROUND ===== */
 .login-page{
-    min-height: 100vh;              /* IMPORTANT for centering */
+    min-height: 100vh;
     margin: 0;
-
     display: flex;
-    align-items: center;            /* vertical center */
-    justify-content: center;        /* horizontal center */
-
-    /* BACKGROUND IMAGE */
+    align-items: center;
+    justify-content: center;
     background-image: url("../assets/bg_img.jpeg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
     position: relative;
 }
 
-/* ===== OPTIONAL OVERLAY (NO BLUR) ===== */
 .login-page::before{
     content: "";
     position: absolute;
     inset: 0;
-    background: transparent;        /* keep image clear */
+    background: transparent;
     z-index: 0;
 }
 
@@ -47,29 +42,56 @@
     z-index: 1;
 }
 
+/* ===== FORCE ALL TEXT INSIDE FORM PANELS TO BE DARK ===== */
+.form-container,
+.form-container *:not(.google-btn):not(button) {
+    color: #333 !important;
+}
+
 /* ===== TEXT ===== */
+.container h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111 !important;
+    margin-bottom: 6px;
+}
+
+.container h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111 !important;
+    margin-bottom: 4px;
+}
+
 .container p{
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.3px;
     margin: 20px 0;
+    color: #444 !important;
 }
 
 .container span{
     font-size: 12px;
+    color: #555 !important;
 }
 
 .container a{
-    color: #333;
+    color: #333 !important;
     font-size: 13px;
     text-decoration: none;
     margin: 15px 0 10px;
 }
 
+.container label {
+    color: #444 !important;
+    font-size: 12px;
+}
+
 /* ===== BUTTON ===== */
 .container button{
     background-color: #FF9900;
-    color: #fff;
+    color: #fff !important;
     font-size: 12px;
     padding: 10px 45px;
     border: 1px solid transparent;
@@ -84,6 +106,7 @@
 .container button.hidden{
     background-color: transparent;
     border-color: #fff;
+    color: #fff !important;
 }
 
 /* ===== FORM ===== */
@@ -106,6 +129,11 @@
     border-radius: 8px;
     width: 100%;
     outline: none;
+    color: #222 !important;
+}
+
+.container input::placeholder {
+    color: #888 !important;
 }
 
 /* ===== FORM CONTAINERS ===== */
@@ -114,6 +142,7 @@
     top: 0;
     height: 100%;
     transition: all 0.6s ease-in-out;
+    background-color: #fff;
 }
 
 .sign-in{
@@ -130,7 +159,7 @@
     width: 100%;
     text-align: center;
     margin-bottom: 15px;
-    margin-top: 60px;   
+    margin-top: 60px;
 }
 
 .sign-up{
@@ -174,7 +203,7 @@
     height: 40px;
 }
 
-/* ===== TOGGLE SECTION ===== */
+/* ===== TOGGLE SECTION (right panel — stays white text on dark bg) ===== */
 .toggle-container{
     position: absolute;
     top: 0;
@@ -221,6 +250,14 @@
     transition: all 0.6s ease-in-out;
 }
 
+/* Toggle panel text must stay WHITE (dark gradient background) */
+.toggle-panel h1,
+.toggle-panel h2,
+.toggle-panel p,
+.toggle-panel span {
+    color: #fff !important;
+}
+
 .toggle-left{
     transform: translateX(-200%);
 }
@@ -236,9 +273,11 @@
 .container.active .toggle-right{
     transform: translateX(200%);
 }
+
+/* ===== GOOGLE BUTTON ===== */
 .google-btn {
     background-color: #ffffff;
-    color: #444;
+    color: #444 !important;
     border: 1px solid #ddd;
     padding: 12px;
     width: 100%;
@@ -250,5 +289,5 @@
 
 .google-btn:hover {
     background-color: #232f3e;
+    color: #fff !important;
 }
-
