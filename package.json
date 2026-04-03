@@ -1,6 +1,17 @@
 {
+  "name": "gig-insurance-root",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix reacat-frontend",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "install:all": "npm install && npm install --prefix backend && npm install --prefix reacat-frontend"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.101.1",
     "react-router-dom": "^7.13.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
