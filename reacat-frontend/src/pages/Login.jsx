@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi, setToken, setUser } from "../services/api";
 import "../styles/login.css";
@@ -11,6 +11,20 @@ export default function Login() {
 
   const [signInData, setSignInData] = useState({ email: "", password: "" });
   const [signUpData, setSignUpData] = useState({ name: "", email: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("rememberedUser");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setSignInData(parsed);
+        setRememberMe(true);
+      } catch (err) {
+        console.error("Failed to parse remembered user");
+      }
+    }
+  }, []);
 
   const handleSignInChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +54,13 @@ export default function Login() {
       const res = await authApi.login(email.trim(), password.trim());
       setToken(res.token);
       setUser(res.user);
+      
+      if (rememberMe) {
+        localStorage.setItem("rememberedUser", JSON.stringify({ email: email.trim(), password: password.trim() }));
+      } else {
+        localStorage.removeItem("rememberedUser");
+      }
+      
       navigate("/home");
     } catch (err) {
       setError(err.message || "Login failed. Please check your credentials.");
@@ -164,7 +185,11 @@ export default function Login() {
             />
 
             <label style={{ fontSize: "12px", marginTop: "5px" }}>
-              <input type="checkbox" /> Remember Me
+              <input 
+                type="checkbox" 
+                checked={rememberMe} 
+                onChange={(e) => setRememberMe(e.target.checked)} 
+              /> Remember Me
             </label>
 
             <a href="#">Forgot Your Password?</a>
