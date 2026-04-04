@@ -43,6 +43,14 @@ router.post("/create", authenticate, async (req, res) => {
     const rate = RATE_MAP[policyType] ?? 0.003;
     const estimatedPremium = parseFloat((coverageAmount * rate).toFixed(2));
 
+    // Enforce logic: A user can only have ONE active plan at a time.
+    // Supersede/cancel any existing active plans before issuing a new one.
+    await supabase
+      .from("policies")
+      .update({ status: "canceled", end_date: new Date().toISOString() })
+      .eq("user_id", userId)
+      .eq("status", "active");
+
     const policyPayload = {
       user_id: userId,
       policy_type: policyType,

@@ -294,6 +294,14 @@ export default function Home() {
   // ── Activate Coverage handler ─────────────────────────────────
   const handleActivate = async (plan, priceIdx) => {
     if (activePolicies[plan.name]) return; // already active
+
+    const hasActive = dashData?.policies?.list?.some(p => p.status === "active");
+    if (hasActive) {
+      if (!window.confirm("You already have an active plan. Upgrading or switching plans will immediately supersede and cancel your current coverage. Proceed?")) {
+        return;
+      }
+    }
+
     setActivatingPlan(plan.name);
     setActivationError("");
     setSelectedPlan(plan.name);
@@ -312,11 +320,17 @@ export default function Home() {
         additionalRiders: plan.tags,
       });
 
-      setActivePolicies(prev => ({ ...prev, [plan.name]: { policyId: res.policy.id, status: "active" } }));
-      // Refresh dashboard counts
-      setDashData(prev => prev ? { ...prev, activePolicies: (prev.activePolicies ?? 0) + 1 } : prev);
-      // Navigate to dashboard to see coverage
-      setTimeout(() => navigateTo("dashboard"), 1200);
+      // Since backend cancels all other active policies, we forcefully replace state
+      setActivePolicies({ [plan.name]: { policyId: res.policy.id, status: "active" } });
+      
+      // Fetch fresh dash data to capture canceled policies and the exact layout
+      setTimeout(async () => {
+        try {
+          const freshDash = await dashboardApi.get(user.id);
+          setDashData(freshDash);
+        } catch(e) {}
+        navigateTo("coverage");
+      }, 1200);
     } catch (err) {
       setActivationError(`${plan.name}: ${err.message}`);
     } finally {
@@ -979,6 +993,39 @@ export default function Home() {
 
             {!dashLoading && dashData && (
               <>
+                {(() => {
+                  const activePlan = dashData?.policies?.list?.find(p => p.status === "active");
+                  if (!activePlan) return null;
+                  
+                  const start = new Date(activePlan.start_date);
+                  const end = new Date(activePlan.end_date);
+                  const now = new Date();
+                  
+                  const totalDays = Math.max(1, Math.round((end - start) / (1000 * 60 * 60 * 24)));
+                  const passedDays = Math.max(0, Math.min(totalDays, Math.round((now - start) / (1000 * 60 * 60 * 24))));
+                  const percent = Math.min(100, Math.round((passedDays / totalDays) * 100));
+
+                  return (
+                    <div className="card" style={{ marginBottom: "1.5rem", borderLeft: "4px solid var(--accent)", background: "linear-gradient(135deg, rgba(0, 229, 160, 0.04) 0%, rgba(0, 180, 255, 0.02) 100%)" }}>
+                      <div className="card-title" style={{ marginBottom: "0.5rem" }}>
+                        <span style={{ fontSize:"1.2rem", marginRight:"8px" }}>🟢</span> 
+                        Active Plan Tracking: <span style={{ textTransform: "capitalize", marginLeft:"6px", color:"var(--text)" }}>{activePlan.policy_type.replace(/-/g," ")}</span>
+                      </div>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem", fontSize: "0.85rem", color: "var(--text2)" }}>
+                        <span>Day {passedDays} of {totalDays}</span>
+                        <span>{totalDays - passedDays} days remaining</span>
+                      </div>
+                      <div style={{ width: "100%", height: "8px", background: "rgba(255,255,255,0.05)", borderRadius: "100px", overflow: "hidden" }}>
+                        <div style={{ width: `${percent}%`, height: "100%", background: "linear-gradient(90deg, var(--accent), #00b4ff)", transition: "width 1s ease-in-out" }} />
+                      </div>
+                      <div style={{ marginTop:"1rem", display:"flex", justifyContent:"space-between", fontSize:"0.75rem", color:"var(--text2)" }}>
+                        <span>Started: {activePlan.start_date}</span>
+                        <span>Ends: {activePlan.end_date}</span>
+                      </div>
+                    </div>
+                  );
+                })()}
+
                 {/* Profile header */}
                 <div className="profile-header">
                   <div className="avatar">{dashData.workerProfile ? "👷" : "👤"}</div>
