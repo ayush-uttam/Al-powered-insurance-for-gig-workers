@@ -54,15 +54,36 @@ async function fetchRealConditions(city = "Mumbai") {
       conditions.rain    = parseFloat(cur.precipitation ?? 0);   // mm (current hour)
     }
 
-    // 3. Fetch AQI from Open AQ / World AQI API (free)
+    // 3. Fetch AQI from WAQI (Primary) or Open-Meteo (Fallback)
     try {
-      const aqRes = await fetch(
-        `https://air-quality-api.open-meteo.com/v1/air-quality` +
-        `?latitude=${lat}&longitude=${lon}&current=us_aqi&timezone=Asia%2FKolkata`
-      );
-      const aqData = await aqRes.json();
-      conditions.aqi = parseFloat(aqData.current?.us_aqi ?? 0);
-    } catch { /* AQI optional */ }
+      let waqiSuccess = false;
+      const waqiToken = process.env.WAQI_API_KEY;
+      
+      if (waqiToken && waqiToken.trim() !== "") {
+        const waqiRes = await fetch(`https://api.waqi.info/feed/geo:${lat};${lon}/?token=${waqiToken}`);
+        const waqiData = await waqiRes.json();
+        if (waqiData && waqiData.status === "ok" && waqiData.data && waqiData.data.aqi) {
+          const aqiVal = parseInt(waqiData.data.aqi, 10);
+          if (!isNaN(aqiVal)) {
+            conditions.aqi = aqiVal;
+            conditions.source = "open-meteo + waqi"; // Store temporarily
+            waqiSuccess = true;
+          }
+        }
+      }
+
+      if (!waqiSuccess) {
+        // Fallback to open-meteo if WAQI fails or token is missing
+        const aqRes = await fetch(
+          `https://air-quality-api.open-meteo.com/v1/air-quality` +
+          `?latitude=${lat}&longitude=${lon}&current=us_aqi&timezone=Asia%2FKolkata`
+        );
+        const aqData = await aqRes.json();
+        conditions.aqi = parseFloat(aqData.current?.us_aqi ?? 0);
+      }
+    } catch (err) {
+      console.warn("⚠️ AQI fetch failed entirely:", err.message);
+    }
 
     // 4. Traffic — deterministic simulation based on time of day + day of week
     const hour = new Date().getHours();
@@ -72,7 +93,10 @@ async function fetchRealConditions(city = "Mumbai") {
     conditions.traffic = isWeekend ? 25 : isPeak ? 65 + Math.random() * 25 : 30 + Math.random() * 20;
     conditions.traffic = Math.round(conditions.traffic);
 
-    conditions.source = "open-meteo + open-aq";
+    // If WAQI was successful, it already set this to 'open-meteo + waqi'
+    if (conditions.source !== "open-meteo + waqi") {
+      conditions.source = "open-meteo + open-aq";
+    }
   } catch (err) {
     console.warn("⚠️  Weather fetch failed, using fallback estimates:", err.message);
     // Fallback: realistic defaults for Indian summer/monsoon
