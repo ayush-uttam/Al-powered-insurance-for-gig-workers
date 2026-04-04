@@ -412,7 +412,6 @@ export default function Home() {
             { id:"home",      icon:"🏠", label:"Home" },
             { id:"dashboard", icon:"📡", label:"Live Monitor", badge: navBadge || null },
             { id:"plans",     icon:"🛡️", label:"Plans" },
-            { id:"risk",      icon:"🗺️", label:"Risk Map" },
             { id:"analytics", icon:"📊", label:"Analytics" },
           ].map(n => (
             <button key={n.id} className={`nav-item ${page===n.id?"active":""}`} onClick={() => navigateTo(n.id)}>
@@ -824,62 +823,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ── RISK MAP ──────────────────────────────────────── */}
-        <div className={`page ${page==="risk"?"active":""}`}>
-          <div style={{ padding:"2.5rem" }}>
-            <div className="page-header">
-              <div className="page-header-top">
-                <div>
-                  <div className="page-title">AI Risk Zone Map</div>
-                  <div className="page-sub">Dynamic zone assessment · Updates every 5 min · Drives AI premium pricing</div>
-                </div>
-                <span className="badge badge-live">● LIVE</span>
-              </div>
-            </div>
-            <div className="card mb-3">
-              <div className="card-title">Coverage Zone Heatmap</div>
-              <div className="map-grid">{mapCells.map((c,i)=><div key={i} className={`map-cell ${c}`} title={c.toUpperCase()+" RISK"} />)}</div>
-              <div className="map-legend">
-                {[["rgba(0,229,160,0.35)","Low Risk"],["rgba(255,170,0,0.5)","Medium Risk"],["rgba(255,68,102,0.5)","High Risk"],["rgba(255,68,102,0.8)","Critical"]].map(([bg,label])=>(
-                  <div key={label} className="legend-item"><div className="legend-dot" style={{ background:bg }} />{label}</div>
-                ))}
-              </div>
-            </div>
-            <div className="grid-2">
-              <div className="card">
-                <div className="card-title">Zone Risk Summary</div>
-                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.75rem", marginTop:"0.5rem" }}>
-                  {[
-                    { label:"Low Risk",    count:mapCounts.low||0,      color:"var(--accent)",  bg:"rgba(0,229,160,0.05)",    border:"rgba(0,229,160,0.15)" },
-                    { label:"Medium Risk", count:mapCounts.medium||0,   color:"var(--warning)", bg:"rgba(255,170,0,0.05)",    border:"rgba(255,170,0,0.15)" },
-                    { label:"High Risk",   count:mapCounts.high||0,     color:"var(--danger)",  bg:"rgba(255,68,102,0.05)",   border:"rgba(255,68,102,0.15)" },
-                    { label:"Critical",    count:mapCounts.critical||0, color:"var(--danger)",  bg:"rgba(255,68,102,0.1)",    border:"rgba(255,68,102,0.3)" },
-                  ].map(z=>(
-                    <div key={z.label} style={{ background:z.bg, border:`1px solid ${z.border}`, borderRadius:"var(--radius-sm)", padding:"0.875rem" }}>
-                      <div className="fs-xs text-muted fw-700" style={{ letterSpacing:"0.5px", textTransform:"uppercase" }}>{z.label}</div>
-                      <div style={{ fontFamily:"'Syne',sans-serif", fontSize:"1.6rem", fontWeight:800, color:z.color }}>{z.count}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-title"><div className="card-title-left">AI Premium Adjustment</div><span className="badge badge-ai">AI</span></div>
-                <p className="text-muted fs-sm mt-1 mb-3" style={{ lineHeight:1.6 }}>ML model adjusts weekly premiums per zone in real-time. High-risk zones get modest surcharge; safe zones get discounts.</p>
-                {[
-                  { zone:"Zone: Indiranagar", adj:"+₹5/wk", pct:80, cls:"risk-high", color:"var(--accent)" },
-                  { zone:"Zone: Koramangala", adj:"+₹2/wk", pct:45, cls:"risk-med",  color:"var(--warning)" },
-                  { zone:"Zone: Whitefield",  adj:"−₹3/wk", pct:20, cls:"risk-low",  color:"var(--accent)" },
-                  { zone:"Zone: Jayanagar",   adj:"±₹0/wk", pct:12, cls:"risk-low",  color:"var(--text2)" },
-                ].map(z=>(
-                  <div key={z.zone} className="risk-meter-row">
-                    <div className="risk-meter-label"><span>{z.zone}</span><span className="val" style={{ color:z.color }}>{z.adj}</span></div>
-                    <div className="risk-bar"><div className={`risk-fill ${z.cls}`} style={{ width:`${z.pct}%` }} /></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* ── ANALYTICS ─────────────────────────────────────── */}
         <div className={`page ${page==="analytics"?"active":""}`}>
