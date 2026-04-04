@@ -42,6 +42,8 @@ export default function Home() {
   const navigate = useNavigate();
   const [page, setPage]           = useState("home");
   const [collapsed, setCollapsed] = useState(window.innerWidth <= 768);
+  const [liveCity, setLiveCity] = useState(null);
+  const [geoStatus, setGeoStatus] = useState("");
   const user = getUser();
 
   // Live clock
@@ -187,14 +189,48 @@ export default function Home() {
     setTimeout(() => setFlash(false), 950);
   }, [animateFlow, enqueueAlert]);
 
+  // ── Geolocation Reverse Auto-detect ───────────────────────────
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      setGeoStatus("Locating...");
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            const { latitude, longitude } = position.coords;
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
+            if (!res.ok) throw new Error("Reverse geocoding failed");
+            const data = await res.json();
+            const cityStr = data.address.city || data.address.town || data.address.village || data.address.county || data.address.state_district;
+            if (cityStr) {
+              setLiveCity(cityStr);
+              setGeoStatus("Live GPS");
+            } else {
+              setGeoStatus("Location parsing failed");
+            }
+          } catch (err) {
+            console.error("Geocoding error:", err);
+            setGeoStatus("Location Error");
+          }
+        },
+        (error) => {
+          console.warn("Geolocation blocked/failed:", error.message);
+          setGeoStatus("Permission Denied");
+        },
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
+      );
+    } else {
+      setGeoStatus("Not Supported");
+    }
+  }, []);
+
   // ── REAL sensor polling — replaces fake drift ─────────────────
   // Fetches live weather+AQI from open-meteo every 30s
   useEffect(() => {
-    const city = dashData?.workerProfile?.city || "Mumbai";
+    const activeCity = liveCity || dashData?.workerProfile?.city || "Mumbai";
 
     const fetchAndApply = async () => {
       try {
-        const res = await triggerApi.conditions(city);
+        const res = await triggerApi.conditions(activeCity);
         const c   = res.conditions;
         const s   = sensorsRef.current;
         if (c.rain    > 0) s.rain    = c.rain;
@@ -229,7 +265,7 @@ export default function Home() {
     fetchAndApply();                          // immediate on load
     const id = setInterval(fetchAndApply, 30_000); // every 30s
     return () => clearInterval(id);
-  }, [dashData?.workerProfile?.city, fireClaim]);
+  }, [liveCity, dashData?.workerProfile?.city, fireClaim]);
 
   // ── Navigation helpers ────────────────────────────────────────
   const navigateTo = (p) => {
@@ -518,7 +554,7 @@ export default function Home() {
                   <span style={{ fontSize:"1.3rem" }}>🤖</span>
                   <div>
                     <div className="card-title" style={{ marginBottom:2 }}>AI Agent Analysis</div>
-                    <div className="text-muted fs-xs">Location: {dashData?.workerProfile?.city || "Mumbai"} · {aiLoading ? "Analyzing…" : aiAnalysis ? `Risk scored · ${aiAnalysis.analysisVersion}` : "Run after profile save"}</div>
+                    <div className="text-muted fs-xs">Location: {liveCity ? `${liveCity} (${geoStatus})` : (dashData?.workerProfile?.city || "Mumbai")} · {aiLoading ? "Analyzing…" : aiAnalysis ? `Risk scored · ${aiAnalysis.analysisVersion}` : "Run after profile save"}</div>
                   </div>
                 </div>
                 <span className="badge badge-ai">⚡ AUTO</span>
